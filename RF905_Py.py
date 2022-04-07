@@ -60,6 +60,7 @@ class RF905:
     def writeconfig(self,address1,address2,address3,address4):
         #self.openSPI()
         #GPIO.output(self.CSN,GPIO.LOW)
+        CSN.value(0)
         #spi.transfer((0x00,))
         #spi.transfer((0x4C,))
         #spi.transfer((0x0C,))
