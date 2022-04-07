@@ -91,52 +91,77 @@ class RF905:
         #self.openSPI()
         ##SetTx
         #GPIO.output(self.TRX_CE,GPIO.LOW)
+        TRX_CE.value(0)
         #GPIO.output(self.TXEN,GPIO.HIGH)
+        TXEN.value(1)
         
         utime.sleep(0.01)
         #GPIO.output(self.CSN,GPIO.LOW)
+        CSN.value(0)
         #spi.transfer((0x20,))
+        spi.write((0x20,))
         for i in range(32):
             a = 32
             if i < len(content):
                 a = ord(content[i])           
             #spi.transfer((a,))
+            spi.write((a,))
         #GPIO.output(self.CSN,GPIO.HIGH)
-        sleep(0.01)
+        CSN.value(1)
+        #sleep(0.01)
+        utime.sleep(0.01)
         #GPIO.output(self.CSN,GPIO.LOW)
+        CSN.value(0)
         #spi.transfer((0x22,))
+        spi.write((0x22,))
         #spi.transfer((address1,))
+        spi.write((address1,))
         #spi.transfer((address2,))
+        spi.write((address2,))
         #spi.transfer((address3,))
+        spi.write((address3,))
         #spi.transfer((address4,))
+        spi.write((address4,))
         #GPIO.output(self.CSN,GPIO.HIGH)
+        CSN.value(1)
      
         #GPIO.output(self.TRX_CE,GPIO.HIGH)
+        TRX_CE.value(1)
         utime.sleep(0.01)
         #GPIO.output(self.TRX_CE,GPIO.LOW)
+        TRX_CE.value(0)
         #spi.closeSPI()
         
     def listen(self,callback):
         #self.openSPI()
         ##SetRx
         #GPIO.output(self.TXEN,GPIO.LOW)
+        TXEN.value(0)
         #GPIO.output(self.TRX_CE,GPIO.HIGH)
+        TRX_CE.value(1)
              
         while 1==1:    
             #while GPIO.input(self.DR) == GPIO.LOW:
+            while DR.value() == 0:
                 a=10
         
             #GPIO.output(self.TRX_CE,GPIO.LOW)
+            TRX_CE.value(0)
             #GPIO.output(self.CSN,GPIO.LOW)
+            CSN.value(0)
             #spi.transfer((0x24,))
+            spi.write((0x24,))
             data = ""
             for x in range(32):
                 #data = data+chr(spi.transfer((0x00,))[0])
+                data = data+chr(spi.transfer((0x00,))[0])
             ##print("2:"+data)
             #callback(data)
             #GPIO.output(self.CSN,GPIO.HIGH)
+            CSN.value(1)
             #GPIO.output(self.TRX_CE,GPIO.HIGH)
-        
+            TRX_CE.value(1)
+
             utime.sleep(0.01)
             
         
